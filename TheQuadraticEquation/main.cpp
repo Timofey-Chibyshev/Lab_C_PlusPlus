@@ -1,35 +1,48 @@
-#include <iostream> 
-#include <cmath> 
+#include <conio.h>
+#include <iostream>
+using std::cout;
+using std::cin;
+using std::endl;
 
-using namespace std;
+#include "QuadEquation.h"
 
-void Solver(const double a, const double b, const double c)
-{
-    double d = b * b - 4 * a * c;
-    if (d > 0)
-    {
-        cout << "x1 = " << ((-b) + sqrt(d)) / (2 * a) << "\n";
-        cout << "x2 = " << ((-b) - sqrt(d)) / (2 * a) << "\n";
-    }
-    if (d == 0)
-    {
-        cout << "x1 = x2 = " << -(b / (2 * a)) << "\n";
-    }
-    if (d < 0) 
-        cout << "D < 0, no reality roots";
-    return;
-}
+void InputCoeffs(double*, double*, double*);
+void PrintRoots(QuadEquation);
 
 int main()
 {
-    double a = 0, b = 0, c = 0; 
-    cout << "Input a, b, c coefficients of quadratic equation ax^2 + bx + c = 0" << endl;
-    cout << "Enter a:\n"; 
-    cin >> a;
-    cout << "Enter b:\n";
-    cin >> b;
-    cout << "Enter c:\n";
-    cin >> c;
-    Solver(a, b, c);
+    double a, b, c;
+    InputCoeffs(&a, &b, &c);
+
+    QuadEquation equation(a, b, c);
+
+    if (!equation.Solve())
+    {
+        cout << "No real roots." << endl;
+    }
+    else
+    {
+        PrintRoots(equation);
+    }
     return 0;
+}
+
+void InputCoeffs(double* a, double* b, double* c)
+{
+    cout << "Enter a, b, c of quadratic equation ax^2 + bx + c = 0: ";
+    cin >> *a >> *b >> *c;
+}
+
+void PrintRoots(QuadEquation equation)
+{
+    double x1 = equation.GetX1(), x2 = equation.GetX2();
+
+    if (x1 != x2)
+    {
+        cout << "x1 = " << x1 << " or x2 = " << x2 << ".";
+    }
+    else
+    {
+        cout << "x1 = " << x1 << ".";
+    }
 }
